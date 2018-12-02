@@ -10,6 +10,5 @@ UCLASS()
 class TESTINGGROUNDSFPS_API UChooseNextWaypoint : public UBTTaskNode {
     GENERATED_BODY()
 
-  public:
-    EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
+    virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };
