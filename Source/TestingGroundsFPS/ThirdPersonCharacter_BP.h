@@ -13,6 +13,9 @@ UCLASS()
 class TESTINGGROUNDSFPS_API AThirdPersonCharacter_BP : public ATP_ThirdPersonCharacter {
     GENERATED_BODY()
 
+  public:
+    TArray<AActor*> GetPatrolPoints() const;
+
   private:
     UPROPERTY(EditInstanceOnly, Category = "Patrol Route")
     TArray<AActor*> PatrolPoints;
