@@ -11,14 +11,16 @@ EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& Own
     // Get patrol points
     auto AIController = OwnerComp.GetAIOwner();
     auto PatollingGaurd = Cast<AThirdPersonCharacter_BP>(AIController->GetPawn());
-
     auto PatrolPoints = PatollingGaurd->GetPatrolPoints();
 
+    // TODO - protect against empty PatrolPoints
+
+    // Set Next WP
     auto BlackboardComp = OwnerComp.GetBlackboardComponent();
     auto IndexValue = BlackboardComp->GetValueAsInt(IndexKey.SelectedKeyName);
-
     BlackboardComp->SetValueAsObject(NextWaypointKey.SelectedKeyName, PatrolPoints[IndexValue]);
 
+    // Cycle to next WP
     int32 NextIndexValue = (IndexValue + 1) % PatrolPoints.Num();
     BlackboardComp->SetValueAsInt(IndexKey.SelectedKeyName, NextIndexValue);
 
