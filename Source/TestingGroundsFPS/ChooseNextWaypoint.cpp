@@ -3,19 +3,22 @@
 #include "ChooseNextWaypoint.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
-#include "ThirdPersonCharacter_BP.h"
-#include "Containers/Array.h"
+#include "PatrolRoute.h"
 
 EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) {
 
+    // Get patrol route component
+    auto ControlledPawn = OwnerComp.GetAIOwner()->GetPawn();
+    auto PatrolRouteComp = ControlledPawn->FindComponentByClass<UPatrolRoute>();
+    if (!ensure(PatrolRouteComp)) { return EBTNodeResult::Failed; }
+
     // Get patrol points
-    auto AIController = OwnerComp.GetAIOwner();
-    auto PatollingGaurd = Cast<AThirdPersonCharacter_BP>(AIController->GetPawn());
-    auto PatrolPoints = PatollingGaurd->GetPatrolPoints();
+    auto PatrolPoints = PatrolRouteComp->GetPatrolPoints();
+    if (PatrolPoints.Num() == 0) {
+        UE_LOG(LogTemp, Warning, TEXT("%s is missing patrol points"), *ControlledPawn->GetName());
+    }
 
-    // TODO - protect against empty PatrolPoints
-
-    // Set Next WP
+    // Set next WP
     auto BlackboardComp = OwnerComp.GetBlackboardComponent();
     auto IndexValue = BlackboardComp->GetValueAsInt(IndexKey.SelectedKeyName);
     BlackboardComp->SetValueAsObject(NextWaypointKey.SelectedKeyName, PatrolPoints[IndexValue]);
