@@ -23,6 +23,12 @@ class AFirstPersonCharacter : public ACharacter {
   public:
     AFirstPersonCharacter();
 
+    UPROPERTY(EditDefaultsOnly, Category = Setup)
+    TSubclassOf<class AGun> GunBlueprint;
+
+  private:
+    AGun* Gun = nullptr;
+
   protected:
     virtual void BeginPlay();
 
